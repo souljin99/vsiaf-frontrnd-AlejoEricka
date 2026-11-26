@@ -1,0 +1,66 @@
+<div class="panel">
+  <h3>OFICINAS Y RESPONSABLES</h3>
+
+  <div class="barra">
+    <button (click)="nuevo()" [disabled]="editando()">Nuevo</button>
+    <button (click)="modificar()" [disabled]="editando() || !seleccionada()">Modificar</button>
+    <button (click)="guardar()" [disabled]="!editando()">Guardar</button>
+    <button (click)="cancelar()" [disabled]="!editando()">Cancelar</button>
+    <button (click)="alternarEstado()" [disabled]="editando() || !seleccionada()">
+      {{ seleccionada()?.activo === false ? 'Activar' : 'Inactivar' }}
+    </button>
+  </div>
+
+  @if (mensaje()) {
+    <p [class.error]="esError()" [class.ok]="!esError()">{{ mensaje() }}</p>
+  }
+
+  <div class="contenedor">
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cód.</th>
+            <th>Oficina</th>
+            <th>Observación</th>
+            <th>Unidad</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (cargando()) {
+            <tr><td colspan="5">Cargando…</td></tr>
+          }
+          @for (o of oficinas(); track o.codOfic) {
+            <tr
+              (click)="seleccionar(o)"
+              [class.activa]="seleccionada()?.codOfic === o.codOfic"
+              [class.inactiva]="!o.activo"
+            >
+              <td>{{ o.codOfic }}</td>
+              <td>{{ o.nombre }}</td>
+              <td>{{ o.observacion }}</td>
+              <td>{{ o.unidad }}</td>
+              <td>{{ o.activo ? 'Activo' : 'Inactivo' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formulario">
+      <label>
+        Código
+        <input [value]="seleccionada()?.codOfic ?? '(automático)'" disabled />
+      </label>
+      <label>
+        Nombre
+        <input [(ngModel)]="nombre" maxlength="65" [disabled]="!editando()" />
+      </label>
+      <label>
+        Observación
+        <textarea [(ngModel)]="observacion" maxlength="255" rows="3" [disabled]="!editando()"></textarea>
+      </label>
+    </div>
+  </div>
+</div>

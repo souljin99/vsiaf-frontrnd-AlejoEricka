@@ -17,6 +17,13 @@ export const routes: Routes = [
         path: 'home',
         loadChildren: () => import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
+      {
+        path: 'oficinas',
+        loadComponent: () =>
+          import('@features/oficinas/oficinas-responsables/oficinas-responsables').then(
+            (m) => m.OficinasResponsables,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: 'login' },

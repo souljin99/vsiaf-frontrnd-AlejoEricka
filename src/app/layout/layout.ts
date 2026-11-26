@@ -8,6 +8,8 @@ interface MenuItem {
   /** Índice de la letra subrayada (atajo). */
   mnemonic: number;
   action?: 'logout';
+  /** Ruta a la que navega el botón. */
+  route?: string;
 }
 
 @Component({
@@ -46,7 +48,7 @@ export class Layout {
   protected readonly menu: MenuItem[] = [
     { label: 'Activos Fijos', mnemonic: 0 },
     { label: 'Grupos y Auxiliares', mnemonic: 0 },
-    { label: 'Oficinas y Responsables', mnemonic: 0 },
+    { label: 'Oficinas y Responsables', mnemonic: 0, route: '/oficinas' },
     { label: 'Generar Reportes', mnemonic: 8 },
     { label: 'Administradores', mnemonic: 1 },
     { label: 'Iniciar sesión', mnemonic: 0, action: 'logout' },
@@ -66,6 +68,9 @@ export class Layout {
     }
     this.active.set(item.label);
     this.sidebarOpen.set(false);
+    if (item.route) {
+      this.router.navigateByUrl(item.route);
+    }
   }
 
   protected logout(): void {
