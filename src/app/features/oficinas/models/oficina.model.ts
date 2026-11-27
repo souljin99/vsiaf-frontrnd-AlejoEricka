@@ -1,6 +1,6 @@
 export interface OficinaRequest {
-  nombre: string;        // requerido, máx. 65 caracteres
-  observacion?: string;  // máx. 255 caracteres
+  nombre: string;        // NOMOFIC, máx. 65
+  observacion?: string;  // OBSERV, máx. 255
 }
 
 export interface OficinaResponse {
@@ -10,6 +10,10 @@ export interface OficinaResponse {
   entidad: number;
   unidad: string;
   activo: boolean;
+  // FEULT y USUAR del DBF: opcionales hasta que el backend los exponga.
+  // Los nombres son una suposición: confirmarlos con quien hace el backend.
+  fechaUltimaModificacion?: string;
+  usuario?: string;
 }
 
 export interface EstadoRequest {

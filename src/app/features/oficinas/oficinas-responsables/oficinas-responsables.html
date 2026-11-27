@@ -20,16 +20,23 @@
       <table>
         <thead>
           <tr>
+            <th>Entidad</th>
+            <th>Unidad</th>
             <th>Cód.</th>
             <th>Oficina</th>
             <th>Observación</th>
-            <th>Unidad</th>
+            @if (hayAuditoria()) {
+              <th>Últ. modif.</th>
+              <th>Usuario</th>
+            }
             <th>Estado</th>
           </tr>
         </thead>
         <tbody>
           @if (cargando()) {
-            <tr><td colspan="5">Cargando…</td></tr>
+            <tr><td colspan="9">Cargando…</td></tr>
+          } @else if (oficinas().length === 0) {
+            <tr><td colspan="9">No hay oficinas registradas</td></tr>
           }
           @for (o of oficinas(); track o.codOfic) {
             <tr
@@ -37,10 +44,15 @@
               [class.activa]="seleccionada()?.codOfic === o.codOfic"
               [class.inactiva]="!o.activo"
             >
+              <td>{{ o.entidad }}</td>
+              <td>{{ o.unidad }}</td>
               <td>{{ o.codOfic }}</td>
               <td>{{ o.nombre }}</td>
               <td>{{ o.observacion }}</td>
-              <td>{{ o.unidad }}</td>
+              @if (hayAuditoria()) {
+                <td>{{ o.fechaUltimaModificacion }}</td>
+                <td>{{ o.usuario }}</td>
+              }
               <td>{{ o.activo ? 'Activo' : 'Inactivo' }}</td>
             </tr>
           }
@@ -49,17 +61,57 @@
     </div>
 
     <div class="formulario">
+      <div class="fila">
+        <label>
+          Entidad
+          <input [value]="seleccionada()?.entidad ?? ''" disabled />
+        </label>
+        <label>
+          Unidad
+          <input [value]="seleccionada()?.unidad ?? ''" disabled />
+        </label>
+        <label>
+          Código
+          <input [value]="seleccionada()?.codOfic ?? '(automático)'" disabled />
+        </label>
+      </div>
+
       <label>
-        Código
-        <input [value]="seleccionada()?.codOfic ?? '(automático)'" disabled />
-      </label>
-      <label>
-        Nombre
+        Nombre de la oficina
         <input [(ngModel)]="nombre" maxlength="65" [disabled]="!editando()" />
+        <small class="contador">{{ nombre.length }}/65</small>
       </label>
+
       <label>
         Observación
-        <textarea [(ngModel)]="observacion" maxlength="255" rows="3" [disabled]="!editando()"></textarea>
+        <textarea
+          [(ngModel)]="observacion"
+          maxlength="255"
+          rows="3"
+          [disabled]="!editando()"
+        ></textarea>
+        <small class="contador">{{ observacion.length }}/255</small>
+      </label>
+
+      @if (hayAuditoria()) {
+        <div class="fila">
+          <label>
+            Última modificación
+            <input [value]="seleccionada()?.fechaUltimaModificacion ?? ''" disabled />
+          </label>
+          <label>
+            Usuario
+            <input [value]="seleccionada()?.usuario ?? ''" disabled />
+          </label>
+        </div>
+      }
+
+      <label>
+        Estado
+        <input
+          [value]="seleccionada() ? (seleccionada()!.activo ? 'Activo' : 'Inactivo') : ''"
+          disabled
+        />
       </label>
     </div>
   </div>

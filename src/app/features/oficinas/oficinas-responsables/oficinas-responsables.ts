@@ -26,6 +26,10 @@ export class OficinasResponsables implements OnInit {
 
   editando = computed(() => this.modo() !== 'ver');
 
+  hayAuditoria = computed(() =>
+    this.oficinas().some((o) => o.fechaUltimaModificacion || o.usuario),
+  );
+
   ngOnInit() {
     this.cargar();
   }
@@ -70,7 +74,10 @@ export class OficinasResponsables implements OnInit {
   }
 
   guardar() {
-    const body = { nombre: this.nombre.trim(), observacion: this.observacion.trim() };
+    const body = {
+    nombre: this.nombre.trim().toUpperCase(),
+    observacion: this.observacion.trim(),
+  };
     if (!body.nombre) return this.aviso('El nombre es obligatorio', true);
     if (body.nombre.length > 65) return this.aviso('El nombre admite máximo 65 caracteres', true);
 

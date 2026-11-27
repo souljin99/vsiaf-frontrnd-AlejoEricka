@@ -73,5 +73,23 @@ tr.inactiva td { color: #888; font-style: italic; }
   }
 }
 
+.formulario {
+  .fila {
+    display: flex;
+    gap: 10px;
+
+    label { flex: 1; min-width: 0; }
+  }
+
+  input:disabled,
+  textarea:disabled { background: #eef3f8; color: #444; }
+}
+
+.contador {
+  align-self: flex-end;
+  font-weight: normal;
+  color: #6b7f95;
+}
+
 .ok { color: #1b7a2b; }
 .error { color: #b00020; }
